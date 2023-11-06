@@ -13,3 +13,8 @@ class Servidor(models.Model):
     total_pontos = models.IntegerField(default=0)
 
      
+class TarefaRealizada(models.Model):
+    colaborador = models.CharField(max_length=100)
+    diretor_coordenador = models.CharField(max_length=100)
+    tarefas = models.TextField()
+    data = models.DateTimeField(auto_now_add=True)

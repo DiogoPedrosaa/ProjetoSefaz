@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from .models import Servidor
-from .forms import ServidorForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Servidor, TarefaRealizada
+from .forms import ServidorForm, TarefaRealizadaForm
 
 def home(request):
     return render(request, 'servidores/home.html')
@@ -11,7 +11,7 @@ def cadastrar(request):
         if form.is_valid():
             servidor = form.save(commit=False)
             
-            # Calcule os pontos com base nas respostas do formulário
+            
             pontos = calcular_pontos(
                 form.cleaned_data['pontualidade'],
                 form.cleaned_data['assiduidade'],
@@ -19,7 +19,7 @@ def cadastrar(request):
                 form.cleaned_data['iniciativa'],
                 form.cleaned_data['atendimento_servicos']
             )
-            servidor.total_pontos = pontos  # Atribua os pontos ao servidor
+            servidor.total_pontos = pontos  
             servidor.save()
 
             return redirect('cadastro_sucesso')
@@ -222,26 +222,29 @@ def relatorio_servidor(request, servidor_id):
 
 
 
-from django.shortcuts import render, redirect
+    
 
-def entrada_dados(request):
-    return render(request, 'entrada_dados.html')
+def preencher_tarefas(request, servidor_id):
+    servidor = Servidor.objects.get(pk=servidor_id)
 
-def processar_dados(request):
     if request.method == 'POST':
-        diretor_coordenador = request.POST['diretor_coordenador']
-        nome_servidor = request.POST['nome_servidor']
-        matricula_servidor = request.POST['matricula_servidor']
-        tarefas_executadas = request.POST['tarefas_executadas']
+        form = TarefaRealizadaForm(request.POST)
+        if form.is_valid():
+            tarefa = form.save(commit=False)
+            tarefa.colaborador = servidor.nome
+            tarefa.diretor_coordenador = form.cleaned_data['diretor_coordenador']
+            tarefa.save()
+            return redirect('cadastro_sucesso')  # Redirecione para uma página de sucesso
 
-        # Armazene essas informações no banco de dados ou onde preferir
+    else:
+        form = TarefaRealizadaForm(initial={'colaborador': servidor.nome})
 
-        # Redirecione para a página do relatório sintético
-        return redirect('relatorio_sintetico')
+    return render(request, 'servidores/preencher_tarefas.html', {'form': form, 'servidor': servidor})
 
-    return redirect('entrada_dados')
 
-def relatorio_sintetico(request):
-    # Recupere as informações do servidor e dos dados do diretor/coordenador aqui
-    # Renderize a página do relatório sintético
-    return render(request, 'relatorio_sintetico.html')
+
+def visualizar_tarefas_servidor(request, servidor_id):
+    servidor = get_object_or_404(Servidor, pk=servidor_id)
+    tarefas = TarefaRealizada.objects.filter(colaborador=servidor.nome)
+    return render(request, 'servidores/visualizar_tarefas_servidor.html', {'servidor': servidor, 'tarefas': tarefas, 'matricula': servidor.matricula})
+

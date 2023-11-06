@@ -24,7 +24,7 @@
         <span class="navbar-brand mb-0 h1"><a href="{% url 'home' %}"> Projeto Sefaz </a> </span>
       </div>
     </nav>
-    <h1>Dados do Servidor</h1>
+    <h1>Dados dos Servidores</h1>
 
     <table class="table table-striped">
         <thead>
@@ -55,11 +55,18 @@
                 <td>{{ servidor.total_pontos }}</td>
                 <td>
                   <a href="{% url 'relatorio_servidor' servidor.id %}" class="btn btn-primary">Informação Pontos</a>
+                
+                  <a href="{% url 'preencher_tarefas' servidor.id %}" class="btn btn-primary">Preencher Tarefas</a>
+
+                  <a href="{% url 'visualizar_tarefas_servidor' servidor.id %}" class="btn btn-primary">Visualizar Tarefas</a>
+
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+
 
    
 

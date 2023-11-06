@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Pagina Inicial</title>
+</head>
+
+<body>
+    <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light">
+        <div class="container text-center">
+          <span class="navbar-brand mb-0 h1"><a href="{% url 'home' %}"> Projeto Sefaz </a> </span>
+        </div>
+      </nav>
+      <div class="container mt-5">
+        <h2 class="text-center">SECRETARIA MUNICIPAL DA ECONOMIA - SEFAZ</h2>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <p style="text-transform: uppercase;">Diretor/Coordenador: {{ tarefas.0.diretor_coordenador }}</p>
+
+                </div>
+                <div class="mb-4">
+                    <p style="font-weight: bold;">Colaborador: {{ servidor.nome }}</p>
+                </div>
+                <div class="mb-4">
+                    <p class="font-weight-bold">Matrícula: {{ servidor.matricula }}</p>
+                </div>
+            </div>
+        </div>
+        <h2 class="mt-4">Relatório Das Tarefas Executadas:</h2>
+        <ul>
+            {% for tarefa in tarefas %}
+            <li>
+                {{ tarefa.tarefas|linebreaksbr }}
+            </li>
+            <li>
+                Data: {{ tarefa.data }}
+            </li>
+            {% empty %}
+                <p>Nenhuma tarefa registrada para este servidor.</p>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'dados_servidor' %}" class="btn btn-primary mt-4">Voltar para a lista de servidores</a>
+    </div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
