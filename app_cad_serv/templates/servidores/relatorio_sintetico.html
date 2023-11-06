@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relatório Sintético</title>
+</head>
+<body>
+    <h1>Relatório Sintético</h1>
+    <p>Diretor/Coordenador: {{ diretor_coordenador }}</p>
+    <p>Colaborador: {{ nome_servidor }} Matrícula: {{ matricula_servidor }}</p>
+
+    <h2>Relatório Sintético das Tarefas Executadas</h2>
+    <ol>
+        <li>{{ tarefas_executadas|safe }}</li>
+        <!-- Use |safe to render HTML tags inside tarefas_executadas -->
+    </ol>
+</body>
+</html>
