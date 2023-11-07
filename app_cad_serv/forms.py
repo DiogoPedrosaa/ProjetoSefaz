@@ -16,6 +16,9 @@ class TarefaRealizadaForm(forms.ModelForm):
     class Meta:
         model = TarefaRealizada
         fields = ['diretor_coordenador', 'tarefas']
+        labels = {
+            'diretor_coordenador': 'Diretor/Coordenador',
+        }
 
     def clean_tarefas(self):
         tarefas = self.cleaned_data.get('tarefas')
