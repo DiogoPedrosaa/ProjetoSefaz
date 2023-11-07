@@ -61,7 +61,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
     iniciativa = iniciativa.lower()
     atendimento_servicos = atendimento_servicos.lower()
     
-    # Calcular pontos para a pontualidade
+   
     if pontualidade == "sem justificativa":
         pontos += 10
     elif pontualidade == "2 justificativas":
@@ -71,7 +71,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
     elif pontualidade == "5 justificativas":
         pontos += 2
 
-    # Calcular pontos para a assiduidade
+    
     if assiduidade == "sem faltas":
         pontos += 10
     elif assiduidade == "1 falta":
@@ -81,7 +81,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
     elif assiduidade == "3 faltas":
         pontos += 2
 
-    # Calcular pontos para execução de tarefas
+    
 
     if execucao_tarefas == "excelente":
         pontos += 30
@@ -93,7 +93,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
         pontos += 10
 
 
-    # Calcular pontos para iniciativa
+    
     
 
     if iniciativa == "excelente":
@@ -106,7 +106,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
         pontos += 5
 
 
-    # Calcular pontos para atendimentos de serviço 
+    
 
     if atendimento_servicos == "excelente":
         pontos += 30
@@ -218,7 +218,7 @@ def calcular_pontos_atendimento_servicos(atendimento_servicos):
 def relatorio_servidor(request, servidor_id):
     servidor = Servidor.objects.get(pk=servidor_id)
     
-    # Calcule os pontos para cada categoria usando as funções correspondentes
+    
     pontos_pontualidade = calcular_pontos_pontualidade(servidor.pontualidade)
     pontos_assiduidade = calcular_pontos_assiduidade(servidor.assiduidade)
     pontos_exec_tarefas = calcular_pontos_exec_tarefas(servidor.execucao_tarefas)
@@ -265,16 +265,22 @@ def visualizar_tarefas_servidor(request, servidor_id):
 
 
 def generate_pdf(request):
-    # Busque os dados que deseja incluir no PDF (por exemplo, servidores)
+    
     servidores = Servidor.objects.all()
 
-    # Crie um objeto BytesIO para armazenar o PDF em memória
+    
     buffer = BytesIO()
 
-    # Crie o documento PDF
+    
     custom_page_size = landscape(letter)
     doc = SimpleDocTemplate(buffer, pagesize=custom_page_size)
     elements = []
+
+    secretaria_name = "SECRETARIA MUNICIPAL DA ECONOMIA - SEFAZ"
+    secretaria_style = getSampleStyleSheet()['Title']
+    secretaria_paragraph = Paragraph(secretaria_name, style=secretaria_style)
+
+    elements.append(secretaria_paragraph)
 
     # Defina a largura das colunas na tabela
     col_widths = [170, 50, 50, 70, 70, 80, 70, 90, 60]
@@ -286,7 +292,7 @@ def generate_pdf(request):
     for servidor in servidores:
         data.append([servidor.nome, servidor.escala, servidor.matricula, servidor.pontualidade, servidor.assiduidade, servidor.execucao_tarefas, servidor.iniciativa, servidor.atendimento_servicos, servidor.total_pontos])
 
-    # Crie a tabela e defina seu estilo
+    
     table = Table(data, colWidths=col_widths)
 
     # Defina estilos para cabeçalhos e células
@@ -308,8 +314,8 @@ def generate_pdf(request):
     style.add('TEXTCOLOR', (0, 1), (-1, -1), colors.black)
     style.add('BACKGROUND', (0, 1), (-1, -1), colors.white)
     style.add('GRID', (0, 0), (-1, -1), 1, colors.black)
-    style.add('FONTSIZE', (0, 1), (-1, -1), 10)  # Altere o tamanho da fonte para 10
-    style.add('BOTTOMPADDING', (0, 1), (-1, -1), 3)  # Ajuste o preenchimento das células de conteúdo
+    style.add('FONTSIZE', (0, 1), (-1, -1), 10)  #tamanho da fonte 
+    style.add('BOTTOMPADDING', (0, 1), (-1, -1), 3)  # Ajusta o preenchimento das células de conteúdo
 
     # Ajuste a altura mínima das linhas
     style.add('LEADING', (0, 1), (-1, -1), 10)
