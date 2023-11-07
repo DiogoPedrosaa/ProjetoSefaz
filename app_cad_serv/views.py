@@ -234,7 +234,7 @@ def preencher_tarefas(request, servidor_id):
             tarefa.colaborador = servidor.nome
             tarefa.diretor_coordenador = form.cleaned_data['diretor_coordenador']
             tarefa.save()
-            return redirect('cadastro_sucesso')  # Redirecione para uma página de sucesso
+            return redirect('dados_servidor')  # Redirecione para uma página de sucesso
 
     else:
         form = TarefaRealizadaForm(initial={'colaborador': servidor.nome})

@@ -39,9 +39,12 @@
             <li>
                 {{ tarefa.tarefas|linebreaksbr }}
             </li>
+            <p></p>
             <li>
                 Data: {{ tarefa.data }}
             </li>
+            <hr>
+            <p></p>
             {% empty %}
                 <p>Nenhuma tarefa registrada para este servidor.</p>
             {% endfor %}

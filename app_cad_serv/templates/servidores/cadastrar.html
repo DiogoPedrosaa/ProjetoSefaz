@@ -12,41 +12,55 @@
   </head>
 
   <style>
+    .navbar {
+      background-color: aquamarine;
+    }
+
     .navbar-brand {
       text-align: center;
       width: 100%;
+      font-size: 24px;
+    }
+
+    .container {
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .container h1 {
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      margin-right: 10px;
     }
   </style>
 
   <body>
-    <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light bg-light">
       <div class="container text-center">
-        <span class="navbar-brand mb-0 h1"><a href="{% url 'home' %}"> Projeto Sefaz </a> </span>
+        <a class="navbar-brand mb-0 h1" href="{% url 'home' %}">Projeto Sefaz</a>
       </div>
     </nav>
-    <div class="container text-center">
-      <h1>Cadastro de Servidores</h1>
-      
+
+    <div class="container">
+      <h1 class="text-center">Cadastro de Servidores</h1>
       <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="CADASTRAR">
-    </form>
+        <div class="form-group">
+          {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">CADASTRAR</button>
+      </form>
+    </div>
 
-    
-  </body>
-
-   
-
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
   </body>
 </html>
