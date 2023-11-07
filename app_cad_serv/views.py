@@ -1,6 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Servidor, TarefaRealizada
 from .forms import ServidorForm, TarefaRealizadaForm
+from reportlab.lib.pagesizes import letter
+from django.http import FileResponse
+from io import BytesIO
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.platypus import Paragraph
+
+
+
+
+
+
 
 def home(request):
     return render(request, 'servidores/home.html')
@@ -248,3 +262,71 @@ def visualizar_tarefas_servidor(request, servidor_id):
     tarefas = TarefaRealizada.objects.filter(colaborador=servidor.nome)
     return render(request, 'servidores/visualizar_tarefas_servidor.html', {'servidor': servidor, 'tarefas': tarefas, 'matricula': servidor.matricula})
 
+
+
+def generate_pdf(request):
+    # Busque os dados que deseja incluir no PDF (por exemplo, servidores)
+    servidores = Servidor.objects.all()
+
+    # Crie um objeto BytesIO para armazenar o PDF em memória
+    buffer = BytesIO()
+
+    # Crie o documento PDF
+    custom_page_size = landscape(letter)
+    doc = SimpleDocTemplate(buffer, pagesize=custom_page_size)
+    elements = []
+
+    # Defina a largura das colunas na tabela
+    col_widths = [170, 50, 50, 70, 70, 80, 70, 90, 60]
+
+    # Crie uma lista de dados para a tabela
+    data = []
+    data.append(["Nome do Servidor", "Escala", "Mat.", "Pontualidade", "Assiduidade", "Exec. Tarefas", "Iniciativa", "At. Serviços", "Total Pontos"])
+
+    for servidor in servidores:
+        data.append([servidor.nome, servidor.escala, servidor.matricula, servidor.pontualidade, servidor.assiduidade, servidor.execucao_tarefas, servidor.iniciativa, servidor.atendimento_servicos, servidor.total_pontos])
+
+    # Crie a tabela e defina seu estilo
+    table = Table(data, colWidths=col_widths)
+
+    # Defina estilos para cabeçalhos e células
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+
+
+
+    # Ajuste o estilo de cada célula (cabeçalho e conteúdo)
+    style.add('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')
+    style.add('ALIGN', (0, 0), (-1, -1), 'CENTER')
+    style.add('TEXTCOLOR', (0, 1), (-1, -1), colors.black)
+    style.add('BACKGROUND', (0, 1), (-1, -1), colors.white)
+    style.add('GRID', (0, 0), (-1, -1), 1, colors.black)
+    style.add('FONTSIZE', (0, 1), (-1, -1), 10)  # Altere o tamanho da fonte para 10
+    style.add('BOTTOMPADDING', (0, 1), (-1, -1), 3)  # Ajuste o preenchimento das células de conteúdo
+
+    # Ajuste a altura mínima das linhas
+    style.add('LEADING', (0, 1), (-1, -1), 10)
+
+    
+    table.setStyle(style)
+
+    
+    elements.append(table)
+    doc.build(elements)
+
+    
+    buffer.seek(0)
+
+    # Crie uma resposta de arquivo para o PDF gerado
+    response = FileResponse(buffer, as_attachment=True, filename='example.pdf')
+
+
+
+    return response

@@ -26,13 +26,13 @@
         <tr>
           <th>Nome do Servidor</th>
           <th>Escala</th>
-          <th>Matrícula</th>
+          <th>Mat.</th>
           <th>Pontualidade</th>
           <th>Assiduidade</th>
-          <th>Execução de Tarefas</th>
+          <th>Exec. Tarefas</th>
           <th>Iniciativa</th>
-          <th>Atendimento de Serviços</th>
-          <th>Total de Pontos</th>
+          <th>At. Serviços</th>
+          <th>Total Pontos</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -74,6 +74,7 @@
         {% endfor %}
       </tbody>
     </table>
+    <a href="{% url 'download_pdf' %}" class="btn btn-primary">Baixar PDF</a>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

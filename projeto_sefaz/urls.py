@@ -10,4 +10,5 @@ urlpatterns = [
     path('relatorio_servidor/<int:servidor_id>/', views.relatorio_servidor, name='relatorio_servidor'),
     path('preencher-tarefas/<int:servidor_id>/', views.preencher_tarefas, name='preencher_tarefas'),
     path('visualizar-tarefas/<int:servidor_id>/', views.visualizar_tarefas_servidor, name='visualizar_tarefas_servidor'),
+    path('download_pdf/', views.generate_pdf, name='download_pdf'),
 ]
