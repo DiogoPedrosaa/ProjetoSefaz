@@ -3,7 +3,7 @@ from django.db import models
 class Servidor(models.Model):
     nome = models.CharField(max_length=100, null=False, default='')
     escala = models.CharField(max_length=10, null=False, default='')
-    matricula = models.CharField(max_length=20, null=False, default='')
+    matricula = models.CharField(max_length=10, null=False, default='')
     pontualidade = models.CharField(max_length=50, null=False, default='')
     assiduidade = models.CharField(max_length=10, null=False, default='')
     execucao_tarefas = models.CharField(max_length=10, null=False, default='')
@@ -14,45 +14,45 @@ class Servidor(models.Model):
 
     
     ESCALA_CHOICES = [
-        ('a', 'A'),
-        ('b', 'B'),
-        ('c', 'C'),
-        ('d', 'D'),
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
     ]
     
     PONTUALIDADE_CHOICES = [
-        ('sem justificativa', 'Sem Justificativa'),
-        ('2 justificativas', '2 Justificativas'),
-        ('3 justificativas', '3 Justificativas'),
-        ('5 justificativas', '5 Justificativas'),
+        ('Sem Justificativa', 'Sem Justificativa'),
+        ('2 Justificativas', '2 Justificativas'),
+        ('3 Justificativas', '3 Justificativas'),
+        ('5 Justificativas', '5 Justificativas'),
     ]
 
     ASSIDUIDADE_CHOICES = [
-        ('sem faltas', 'Sem Faltas'),
-        ('1 falta', '1 Falta'),
-        ('2 faltas', '2 Faltas'),
-        ('3 faltas', '3 Faltas'),
+        ('Sem Faltas', 'Sem Faltas'),
+        ('1 Falta', '1 Falta'),
+        ('2 Faltas', '2 Faltas'),
+        ('3 Faltas', '3 Faltas'),
     ]
 
     EXECUCAO_TAREFAS_CHOICES = [
-        ('excelente', 'Excelente'),
-        ('otimo', 'Ótimo'),
-        ('bom', 'Bom'),
-        ('regular', 'Regular'),
+        ('Excelente', 'Excelente'),
+        ('Otimo', 'Ótimo'),
+        ('Bom', 'Bom'),
+        ('Regular', 'Regular'),
     ]
 
     INICIATIVA_CHOICES = [
-        ('excelente', 'Excelente'),
-        ('otimo', 'Ótimo'),
-        ('bom', 'Bom'),
-        ('regular', 'Regular'),
+        ('Excelente', 'Excelente'),
+        ('Otimo', 'Ótimo'),
+        ('Bom', 'Bom'),
+        ('Regular', 'Regular'),
     ]
 
     ATENDIMENTO_SERVICOS_CHOICES = [
-        ('excelente', 'Excelente'),
-        ('otimo', 'Ótimo'),
-        ('bom', 'Bom'),
-        ('regular', 'Regular'),
+        ('Excelente', 'Excelente'),
+        ('Otimo', 'Ótimo'),
+        ('Bom', 'Bom'),
+        ('Regular', 'Regular'),
     ]
 
     escala = models.CharField(max_length=50, choices=ESCALA_CHOICES)
