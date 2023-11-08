@@ -336,3 +336,9 @@ def generate_pdf(request):
 
 
     return response
+
+
+def excluir_servidor(request, servidor_id):
+    servidor = get_object_or_404(Servidor, pk=servidor_id)
+    servidor.delete()
+    return redirect('dados_servidor')
