@@ -6,11 +6,13 @@ class ServidorForm(forms.ModelForm):
     class Meta:
         model = Servidor
         fields = '__all__'
-        exclude = ['total_pontos']
+        exclude = ['total_pontos', 'gratificacao_pontos']
         labels = {
             'execucao_tarefas': 'Execução de Tarefas',
             'atendimento_servicos': 'Atendimento de Serviços',
         }
+    
+
 
 class TarefaRealizadaForm(forms.ModelForm):
     class Meta:

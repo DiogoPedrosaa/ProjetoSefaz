@@ -24,9 +24,20 @@ def cadastrar(request):
         form = ServidorForm(request.POST)
         if form.is_valid():
             servidor = form.save(commit=False)
+
+            tipo_escala = form.cleaned_data['tipo_escala']
+            escala = form.cleaned_data['escala']
+            valor_escala = 0
+
+            if tipo_escala == 'DIRETA':
+                valores_escala = {'A': 16.71, 'B': 24.98, 'C': 36.46, 'D': 50.65}
+            elif tipo_escala == 'INDIRETA':
+                valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
+            else:
+                valores_escala = {'A': 0, 'B': 0, 'C': 0, 'D': 0}
             
             
-            pontos = calcular_pontos(
+            pontos, gratificacao = calcular_pontos(
                 form.cleaned_data['pontualidade'],
                 form.cleaned_data['assiduidade'],
                 form.cleaned_data['execucao_tarefas'],
@@ -34,6 +45,10 @@ def cadastrar(request):
                 form.cleaned_data['atendimento_servicos']
             )
             servidor.total_pontos = pontos  
+            servidor.gratificacao_pontos = gratificacao
+            print(f"Tipo de Escala: {tipo_escala}")
+            print(f"Escala: {escala}")
+            print(f"Gratificação Pontos: {servidor.gratificacao_pontos}")
             servidor.save()
 
             return redirect('cadastro_sucesso')
@@ -116,9 +131,11 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
         pontos += 15
     elif atendimento_servicos == "regular":
         pontos += 10
-   
 
-    return pontos
+
+    gratificacao = pontos * 50
+
+    return pontos, gratificacao
 
 
 def relatorio_servidor(request, servidor_id):

@@ -1,18 +1,8 @@
 from django.db import models
 
+
 class Servidor(models.Model):
-    nome = models.CharField(max_length=100, null=False, default='')
-    escala = models.CharField(max_length=10, null=False, default='')
-    matricula = models.CharField(max_length=10, null=False, default='')
-    pontualidade = models.CharField(max_length=50, null=False, default='')
-    assiduidade = models.CharField(max_length=10, null=False, default='')
-    execucao_tarefas = models.CharField(max_length=10, null=False, default='')
-    iniciativa = models.CharField(max_length=10, null=False, default='')
-    atendimento_servicos = models.CharField(max_length=10, null=False, default='')
-    total_pontos = models.IntegerField(default=0)
 
-
-    
     ESCALA_CHOICES = [
         ('A', 'A'),
         ('B', 'B'),
@@ -55,14 +45,22 @@ class Servidor(models.Model):
         ('Regular', 'Regular'),
     ]
 
-    escala = models.CharField(max_length=50, choices=ESCALA_CHOICES)
+    TIPO_ESCALA_CHOICES = [
+        ('DIRETA', 'Direta'),
+        ('INDIRETA', 'Indireta'),
+    ]
+
+    nome = models.CharField(max_length=100, null=False, default='')
+    escala = models.CharField(max_length=10, choices=ESCALA_CHOICES)
+    tipo_escala = models.CharField(max_length=10, choices=TIPO_ESCALA_CHOICES, default='')
+    matricula = models.CharField(max_length=10, null=False, default='', unique=True)
     pontualidade = models.CharField(max_length=50, choices=PONTUALIDADE_CHOICES)
     assiduidade = models.CharField(max_length=10, choices=ASSIDUIDADE_CHOICES)
     execucao_tarefas = models.CharField(max_length=10, choices=EXECUCAO_TAREFAS_CHOICES)
     iniciativa = models.CharField(max_length=10, choices=INICIATIVA_CHOICES)
     atendimento_servicos = models.CharField(max_length=10, choices=ATENDIMENTO_SERVICOS_CHOICES)
-
     total_pontos = models.IntegerField(default=0)
+    gratificacao_pontos = models.IntegerField(default=0)
 
      
 class TarefaRealizada(models.Model):
