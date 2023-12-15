@@ -10,28 +10,49 @@
     .navbar-brand {
       text-align: center;
       width: 100%;
+      padding-right: 0; /* Adicionado para ajustar o espaçamento à direita */
+    }
+
+    .navbar {
+      width: 110%; 
+      max-width: none; 
     }
 
     .table-top {
-      max-width: 400px;
+      max-width: 500px;
       font-weight: bold;
       background-color: #f2f2f2;
-      
     }
 
     .table-top td {
       text-align: start;
     }
+
+    #searchInput {
+      max-width: 200px; /* Defina o valor desejado */
+    }
+
+    
+
+    .form-label {
+      margin-right: 10px;
+    }
+
   </style>
 </head>
 <body class="m-0">
-  <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light w-200">
-    <div class="container text-center">
-      <span class="navbar-brand mb-0 h1"><a href="{% url 'home' %}"> Projeto Sefaz </a></span>
+  <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light">
+    <div class="container-fluid text-center">
+      <span class="navbar-brand mb-0 h1 d-flex justify-content-center"><a href="{% url 'home' %}"> Projeto Sefaz </a></span>
     </div>
   </nav>
   <div class="container-fluid text-center">
     <h1>Dados dos Servidores</h1>
+
+    <div class="mb-3 d-flex justify-content-start">
+      <label for="searchInput" class="form-label">Pesquisar por Nome:</label>
+      <input type="text" class="form-control" id="searchInput" oninput="filterServidores()">
+    </div>
 
     <table class="table table-bordered table-top">
       <tbody>
@@ -53,7 +74,7 @@
       </tbody>
     </table>
     
-    <table class="table table-bordered table-striped">
+    <table id="tabelaServidores" class="table table-bordered table-striped">
       <thead>
         <tr>
           <th>Nome do Servidor</th>
@@ -133,5 +154,27 @@
     <a href="{% url 'download_pdf' %}" class="btn btn-primary">Baixar PDF</a>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script>
+    function filterServidores() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("tabelaServidores"); // Seleciona a tabela de servidores
+      tr = table.getElementsByTagName("tr");
+
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0]; // Assume que o nome do servidor está na primeira coluna
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
 </body>
+
 </html>
