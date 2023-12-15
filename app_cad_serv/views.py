@@ -14,8 +14,6 @@ from reportlab.platypus import Paragraph
 
 
 
-
-
 def home(request):
     return render(request, 'servidores/home.html')
 
@@ -25,18 +23,6 @@ def cadastrar(request):
         if form.is_valid():
             servidor = form.save(commit=False)
 
-            tipo_escala = form.cleaned_data['tipo_escala']
-            escala = form.cleaned_data['escala']
-            valor_escala = 0
-
-            if tipo_escala == 'DIRETA':
-                valores_escala = {'A': 16.71, 'B': 24.98, 'C': 36.46, 'D': 50.65}
-            elif tipo_escala == 'INDIRETA':
-                valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
-            else:
-                valores_escala = {'A': 0, 'B': 0, 'C': 0, 'D': 0}
-            
-            
             pontos, gratificacao = calcular_pontos(
                 form.cleaned_data['pontualidade'],
                 form.cleaned_data['assiduidade'],
@@ -46,21 +32,27 @@ def cadastrar(request):
             )
             servidor.total_pontos = pontos  
             servidor.gratificacao_pontos = gratificacao
-            print(f"Tipo de Escala: {tipo_escala}")
-            print(f"Escala: {escala}")
-            print(f"Gratificação Pontos: {servidor.gratificacao_pontos}")
             servidor.save()
 
             return redirect('cadastro_sucesso')
     else:
         form = ServidorForm()
 
+        
+
     return render(request, 'servidores/cadastrar.html', {'form': form})
 
 
 def dados_servidor(request):
     servidores = Servidor.objects.all()
-    return render(request, 'servidores/dados_servidor.html', {'servidores': servidores})
+
+    valores_escala = {
+        'A': calcular_valores_escala('DIRETA', 16.20),  # Substitua pelos valores reais que você deseja
+        'B': calcular_valores_escala('DIRETA', 10.10),
+        'C': calcular_valores_escala('DIRETA', 10.24),
+        'D': calcular_valores_escala('DIRETA', 20.51),
+    }
+    return render(request, 'servidores/dados_servidor.html', {'servidores': servidores, 'valores_escala': valores_escala})
 
 
 def cadastro_sucesso(request):
@@ -138,6 +130,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
     return pontos, gratificacao
 
 
+
 def relatorio_servidor(request, servidor_id):
     
     servidor = Servidor.objects.get(pk=servidor_id)
@@ -146,6 +139,7 @@ def relatorio_servidor(request, servidor_id):
     
 
 
+#Logica dos calculos de pontuação total dos servidores (melhorar)
 def calcular_pontos_pontualidade(pontualidade):
 
     pontualidade = pontualidade.lower()
@@ -254,7 +248,7 @@ def relatorio_servidor(request, servidor_id):
 
 
     
-
+#Logica para Preencher as tarefas do servidor
 def preencher_tarefas(request, servidor_id):
     servidor = Servidor.objects.get(pk=servidor_id)
 
@@ -274,6 +268,7 @@ def preencher_tarefas(request, servidor_id):
 
 
 
+#Envia as tarefas registradas para o visualizados
 def visualizar_tarefas_servidor(request, servidor_id):
     servidor = get_object_or_404(Servidor, pk=servidor_id)
     tarefas = TarefaRealizada.objects.filter(colaborador=servidor.nome)
@@ -281,6 +276,7 @@ def visualizar_tarefas_servidor(request, servidor_id):
 
 
 
+#logica para gerar o pdf da pagina de dados dos servidores
 def generate_pdf(request):
     
     servidores = Servidor.objects.all()
@@ -304,10 +300,10 @@ def generate_pdf(request):
 
     # Crie uma lista de dados para a tabela
     data = []
-    data.append(["Nome do Servidor", "Escala", "Mat.", "Pontualidade", "Assiduidade", "Exec. Tarefas", "Iniciativa", "At. Serviços", "Total Pontos"])
+    data.append(["Nome do Servidor", "Escala", "Mat.", "Pontualidade", "Assiduidade", "Exec. Tarefas", "Iniciativa", "At. Serviços", "Total Pontos", "ESCALA", "OBSERVAÇÃO"])
 
     for servidor in servidores:
-        data.append([servidor.nome, servidor.escala, servidor.matricula, servidor.pontualidade, servidor.assiduidade, servidor.execucao_tarefas, servidor.iniciativa, servidor.atendimento_servicos, servidor.total_pontos])
+        data.append([servidor.nome, servidor.escala, servidor.matricula, servidor.pontualidade, servidor.assiduidade, servidor.execucao_tarefas, servidor.iniciativa, servidor.atendimento_servicos, servidor.total_pontos, servidor.escala, servidor.tipo_modalidade])
 
     
     table = Table(data, colWidths=col_widths)
@@ -359,3 +355,21 @@ def excluir_servidor(request, servidor_id):
     servidor = get_object_or_404(Servidor, pk=servidor_id)
     servidor.delete()
     return redirect('dados_servidor')
+
+
+
+#Logica para calcular valores especificos das escalas (não funcionando)
+def calcular_valores_escala(tipo_escala, escala):
+    if tipo_escala == 'DIRETA':
+        valores_escala = {'A': 16.71, 'B': 24.98, 'C': 36.46, 'D': 50.65}
+    elif tipo_escala == 'INDIRETA':
+        valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
+    else:
+        print(f"Tipo de escala desconhecido: {tipo_escala}")
+        valores_escala = {'A': 1, 'B': 1, 'C': 1, 'D': 1}
+
+    result = valores_escala.get(escala, 0)
+    print(f"Valor da escala {escala}: {result}")
+
+    return result
+

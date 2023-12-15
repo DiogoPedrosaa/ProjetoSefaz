@@ -50,6 +50,11 @@ class Servidor(models.Model):
         ('INDIRETA', 'Indireta'),
     ]
 
+    TIPO_MODALIDADE_CHOICES = [
+        ('PRESENCIAL', 'Presencial'),
+        ('REMOTO', 'Remoto'),
+    ]
+
     nome = models.CharField(max_length=100, null=False, default='')
     escala = models.CharField(max_length=10, choices=ESCALA_CHOICES)
     tipo_escala = models.CharField(max_length=10, choices=TIPO_ESCALA_CHOICES, default='')
@@ -61,6 +66,7 @@ class Servidor(models.Model):
     atendimento_servicos = models.CharField(max_length=10, choices=ATENDIMENTO_SERVICOS_CHOICES)
     total_pontos = models.IntegerField(default=0)
     gratificacao_pontos = models.IntegerField(default=0)
+    tipo_modalidade = models.CharField(max_length=10,choices=TIPO_MODALIDADE_CHOICES, default='')
 
      
 class TarefaRealizada(models.Model):

@@ -5,8 +5,7 @@ from django.core.validators import MinLengthValidator, ValidationError
 class ServidorForm(forms.ModelForm):
     class Meta:
         model = Servidor
-        fields = '__all__'
-        exclude = ['total_pontos', 'gratificacao_pontos']
+        fields = ['nome', 'escala', 'tipo_escala', 'matricula', 'pontualidade', 'assiduidade', 'execucao_tarefas', 'iniciativa', 'atendimento_servicos', 'tipo_modalidade']
         labels = {
             'execucao_tarefas': 'Execução de Tarefas',
             'atendimento_servicos': 'Atendimento de Serviços',

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -11,16 +11,48 @@
       text-align: center;
       width: 100%;
     }
+
+    .table-top {
+      max-width: 400px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      
+    }
+
+    .table-top td {
+      text-align: start;
+    }
   </style>
 </head>
-<body>
-  <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light">
+<body class="m-0">
+  <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light w-200">
     <div class="container text-center">
       <span class="navbar-brand mb-0 h1"><a href="{% url 'home' %}"> Projeto Sefaz </a></span>
     </div>
   </nav>
-  <div class="container text-center">
+  <div class="container-fluid text-center">
     <h1>Dados dos Servidores</h1>
+
+    <table class="table table-bordered table-top">
+      <tbody>
+        <tr>
+          <td>PREFEITURA MUNICIPAL DE MACEIÓ</td>
+        </tr>
+        <tr>
+          <td>SECRETARIA MUNICIPAL DA FAZENDA</td>
+        </tr>
+        <tr>
+          <td>SETOR: COORD, GERAL DE ATENDIMENTO AO CONTRIBUINTE</td>
+        </tr>
+        <tr>
+          <td>COORDENADOR: TESTE</td>
+        </tr>
+        <tr>
+          <td>MÊS REFERÊNCIA - teste </td>
+        </tr>
+      </tbody>
+    </table>
+    
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -34,37 +66,67 @@
           <th>At. Serviços</th>
           <th>Total Pontos</th>
           <th>Ações</th>
+          <th>ADMINIST.</th>
+          <th>OBSERVAÇÃO</th>
+          <th>V.P ATUAL</th>
+          <th> Nº SERV </th>
         </tr>
       </thead>
       <tbody>
         {% for servidor in servidores %}
-        <tr>
-          <td>{{ servidor.nome }}</td>
-          <td>{{ servidor.escala }}</td>
-          <td>{{ servidor.matricula }}</td>
-          <td>{{ servidor.pontualidade }}</td>
-          <td>{{ servidor.assiduidade }}</td>
-          <td>{{ servidor.execucao_tarefas }}</td>
-          <td>{{ servidor.iniciativa }}</td>
-          <td>{{ servidor.atendimento_servicos }}</td>
-          <td>{{ servidor.total_pontos }}</td>
-          <td>
-            <div class="d-flex">
-              <a href="{% url 'relatorio_servidor' servidor.id %}" class="btn btn-primary mr-2">
-                <i class="fa fa-info-circle"></i> Informação Pontos
-              </a>
-              <a href="{% url 'preencher_tarefas' servidor.id %}" class="btn btn-secondary mr-2">
-                <i class="fa fa-tasks"></i> Preencher Tarefas
-              </a>
-              <a href="{% url 'visualizar_tarefas_servidor' servidor.id %}" class="btn btn-info mr-2">
-                <i class="fa fa-eye"></i> Visualizar Tarefas
-              </a>
-              <a href="{% url 'excluir_servidor' servidor.id %}" class="btn btn-danger">
-                <i class="fa fa-trash"></i> Excluir
-              </a>
-            </div>
-          </td>
-        </tr>
+          <tr>
+            <td>{{ servidor.nome }}</td>
+            <td>{{ servidor.escala }}</td>
+            <td>{{ servidor.matricula }}</td>
+            <td>{{ servidor.pontualidade }}</td>
+            <td>{{ servidor.assiduidade }}</td>
+            <td>{{ servidor.execucao_tarefas }}</td>
+            <td>{{ servidor.iniciativa }}</td>
+            <td>{{ servidor.atendimento_servicos }}</td>
+            <td>{{ servidor.total_pontos }}</td>
+            <td>
+              <div class="d-flex">
+                <a href="{% url 'relatorio_servidor' servidor.id %}" class="btn btn-primary mr-2">
+                  <i class="fa fa-info-circle"></i> Informação Pontos
+                </a>
+                <a href="{% url 'preencher_tarefas' servidor.id %}" class="btn btn-secondary mr-2">
+                  <i class="fa fa-tasks"></i> Preencher Tarefas
+                </a>
+                <a href="{% url 'visualizar_tarefas_servidor' servidor.id %}" class="btn btn-info mr-2">
+                  <i class="fa fa-eye"></i> Visualizar Tarefas
+                </a>
+                <a href="{% url 'excluir_servidor' servidor.id %}" class="btn btn-danger">
+                  <i class="fa fa-trash"></i> Excluir
+                </a>
+              </div>
+            </td>
+            <td>{{ servidor.tipo_escala }}</td>
+            <td>{{ servidor.tipo_modalidade }}</td>
+            <td>
+              {% if servidor.tipo_escala == 'DIRETA' %}
+                {% if servidor.escala == 'A' %}
+                  {{ valores_escala.A }}
+                {% elif servidor.escala == 'B' %}
+                  {{ valores_escala.B }}
+                {% elif servidor.escala == 'C' %}
+                  {{ valores_escala.C }}
+                {% elif servidor.escala == 'D' %}
+                  {{ valores_escala.D }}
+                {% endif %}
+              {% elif servidor.tipo_escala == 'INDIRETA' %}
+                {% if servidor.escala == 'A' %}
+                  {{ valores_escala.A }}
+                {% elif servidor.escala == 'B' %}
+                  {{ valores_escala.B }}
+                {% elif servidor.escala == 'C' %}
+                  {{ valores_escala.C }}
+                {% elif servidor.escala == 'D' %}
+                  {{ valores_escala.D }}
+                {% endif %}
+              {% endif %}
+            </td>
+            <td> {{ servidor.id }}</td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
