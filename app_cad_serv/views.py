@@ -47,10 +47,16 @@ def dados_servidor(request):
     servidores = Servidor.objects.all()
 
     valores_escala = {
-        'A': calcular_valores_escala('DIRETA', 16.20),  # Substitua pelos valores reais que você deseja
-        'B': calcular_valores_escala('DIRETA', 10.10),
-        'C': calcular_valores_escala('DIRETA', 10.24),
-        'D': calcular_valores_escala('DIRETA', 20.51),
+        'A': calcular_valores_escala('DIRETA', 16.71),  # Substitua pelos valores reais que você deseja
+        'B': calcular_valores_escala('DIRETA', 24.98),
+        'C': calcular_valores_escala('DIRETA', 36.46),
+        'D': calcular_valores_escala('DIRETA', 50.65),
+
+
+        'A': calcular_valores_escala('INDIRETA', 11.02),  
+        'B': calcular_valores_escala('INDIRETA', 16.71),
+        'C': calcular_valores_escala('INDIRETA', 24.98),
+        'D': calcular_valores_escala('INDIRETA', 36.46),
     }
     return render(request, 'servidores/dados_servidor.html', {'servidores': servidores, 'valores_escala': valores_escala})
 
@@ -286,9 +292,28 @@ def generate_pdf(request):
 
     
     custom_page_size = landscape(letter)
-    doc = SimpleDocTemplate(buffer, pagesize=custom_page_size)
+    #Ajusta margens da tabela
+    doc = SimpleDocTemplate(buffer, pagesize=custom_page_size, rightMargin=50, leftMargin=20)
     elements = []
 
+
+
+    info_table_data = [
+        ["PREFEITURA MUNICIPAL DE MACEIÓ"],
+        ["SECRETARIA MUNICIPAL DA FAZENDA"],
+        ["SETOR: COORD, GERAL DE ATENDIMENTO AO CONTRIBUINTE"],
+        ["COORDENADOR: TESTE"],
+        ["MÊS REFERÊNCIA - teste"]
+    ]
+    info_table = Table(info_table_data, colWidths=[200])
+
+    info_table.setStyle(TableStyle([
+    ('LEFTPADDING', (0, 0), (-1, -1), -280),  # Ajusta a margem esquerda
+]))
+
+    elements.append(info_table)
+
+    
     secretaria_name = "SECRETARIA MUNICIPAL DA ECONOMIA - SEFAZ"
     secretaria_style = getSampleStyleSheet()['Title']
     secretaria_paragraph = Paragraph(secretaria_name, style=secretaria_style)
@@ -296,14 +321,14 @@ def generate_pdf(request):
     elements.append(secretaria_paragraph)
 
     # Defina a largura das colunas na tabela
-    col_widths = [170, 50, 50, 70, 70, 80, 70, 90, 60]
+    col_widths = [170, 50, 50, 70, 70, 80, 70, 90, 60, 60, 70]
 
     # Crie uma lista de dados para a tabela
     data = []
-    data.append(["Nome do Servidor", "Escala", "Mat.", "Pontualidade", "Assiduidade", "Exec. Tarefas", "Iniciativa", "At. Serviços", "Total Pontos", "ESCALA", "OBSERVAÇÃO"])
+    data.append(["Nome do Servidor", "Escala", "Mat.", "Pontualidade", "Assiduidade", "Exec. Tarefas", "Iniciativa", "At. Serviços", "Total Pontos",])
 
     for servidor in servidores:
-        data.append([servidor.nome, servidor.escala, servidor.matricula, servidor.pontualidade, servidor.assiduidade, servidor.execucao_tarefas, servidor.iniciativa, servidor.atendimento_servicos, servidor.total_pontos, servidor.escala, servidor.tipo_modalidade])
+        data.append([servidor.nome, servidor.escala, servidor.matricula, servidor.pontualidade, servidor.assiduidade, servidor.execucao_tarefas, servidor.iniciativa, servidor.atendimento_servicos, servidor.total_pontos])
 
     
     table = Table(data, colWidths=col_widths)
@@ -327,7 +352,7 @@ def generate_pdf(request):
     style.add('TEXTCOLOR', (0, 1), (-1, -1), colors.black)
     style.add('BACKGROUND', (0, 1), (-1, -1), colors.white)
     style.add('GRID', (0, 0), (-1, -1), 1, colors.black)
-    style.add('FONTSIZE', (0, 1), (-1, -1), 10)  #tamanho da fonte 
+    style.add('FONTSIZE', (0, 1), (-1, -1), 8)  #tamanho da fonte 
     style.add('BOTTOMPADDING', (0, 1), (-1, -1), 3)  # Ajusta o preenchimento das células de conteúdo
 
     # Ajuste a altura mínima das linhas
@@ -366,10 +391,36 @@ def calcular_valores_escala(tipo_escala, escala):
         valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
     else:
         print(f"Tipo de escala desconhecido: {tipo_escala}")
-        valores_escala = {'A': 1, 'B': 1, 'C': 1, 'D': 1}
+        valores_escala = {}
 
-    result = valores_escala.get(escala, 0)
-    print(f"Valor da escala {escala}: {result}")
+    return valores_escala.get(escala)
 
-    return result
 
+
+def dados_servidor_geral(request):
+    servidores = Servidor.objects.all()
+    valores_escala = {}
+
+    for servidor in servidores:
+        valores_escala[servidor.id] = calcular_valores_escala(servidor.tipo_escala, servidor.escala)
+
+    return render(request, 'dados_servidor_geral.html', {'servidores': servidores, 'valores_escala': valores_escala})
+
+
+
+def dados_servidor_geral(request):
+    servidores = Servidor.objects.all()
+
+    valores_escala = {
+        'A': calcular_valores_escala('DIRETA', 16.71),  # Substitua pelos valores reais que você deseja
+        'B': calcular_valores_escala('DIRETA', 24.98),
+        'C': calcular_valores_escala('DIRETA', 36.46),
+        'D': calcular_valores_escala('DIRETA', 50.65),
+
+
+        'A': calcular_valores_escala('INDIRETA', 11.02),  
+        'B': calcular_valores_escala('INDIRETA', 16.71),
+        'C': calcular_valores_escala('INDIRETA', 24.98),
+        'D': calcular_valores_escala('INDIRETA', 36.46),
+    }
+    return render(request, 'servidores/dados_servidor_geral.html', {'servidores': servidores, 'valores_escala': valores_escala})
