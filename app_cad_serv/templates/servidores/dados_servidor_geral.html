@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-fPwb0w6wyQ8p0LOtU3kzsfk2jsV9AMxR+GvU6P8inCyMlQ5D52zBOjr65BkmwTCmL" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha384-fPwb0w6wyQ8p0LOtU3kzsfk2jsV9AMxR+GvU6P8inCyMlQ5D52zBOjr65BkmwTCmL" crossorigin="anonymous">
   <title>Dados dos Servidores</title>
   <style>
     .navbar-brand {
@@ -14,8 +17,8 @@
     }
 
     .navbar {
-      width: 110%; 
-      max-width: none; 
+      width: 100%;
+      max-width: none;
     }
 
     .table-top {
@@ -29,30 +32,35 @@
     }
 
     #searchInput {
-      max-width: 200px; 
+      max-width: 200px;
     }
 
-    
+
 
     .form-label {
-      margin-right: 10px;
+      margin-right: 5px;
     }
 
 
     .small-font {
-   font-size: 15px; /* Ajuste o tamanho da fonte conforme necessário */
-  }
+      font-size: 15px;
+      /* Ajuste o tamanho da fonte conforme necessário */
+    }
 
 
-#tabelaServidores {
-   font-size: 13px; /* Ajuste o tamanho do texto conforme necessário */
-  }
+    #tabelaServidores {
+      font-size: 13px;
+      /* Ajuste o tamanho do texto conforme necessário */
+    }
+
   </style>
 </head>
+
 <body class="m-0">
-  <nav style="background-color: aquamarine !important;" class="navbar navbar-light bg-light">
+  <nav class="navbar navbar-light bg-light">
     <div class="container-fluid text-center">
-      <span class="navbar-brand mb-0 h1 d-flex justify-content-center"><a href="{% url 'home' %}"> Projeto Sefaz </a></span>
+      <span class="navbar-brand mb-0 h1 d-flex justify-content-center"><a href="{% url 'home' %}"> Projeto Sefaz
+        </a></span>
     </div>
   </nav>
   <div class="container-fluid text-center">
@@ -74,14 +82,14 @@
           <td>SETOR: COORD, GERAL DE ATENDIMENTO AO CONTRIBUINTE</td>
         </tr>
         <tr>
-          <td>COORDENADOR: TESTE 2</td>
+          <td>COORDENADOR: {{ diretor_coordenador }}</td>
         </tr>
         <tr>
-          <td>MÊS REFERÊNCIA - teste </td>
+          <td>MÊS REFERÊNCIA - {{ mes_referencia }} </td>
         </tr>
       </tbody>
     </table>
-    
+
     <table id="tabelaServidores" class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -98,45 +106,25 @@
       </thead>
       <tbody>
         {% for servidor in servidores %}
-          <tr>
-            <td>{{ servidor.nome }}</td>
-            <td>{{ servidor.matricula }}</td>
-            <td>
-              {% if servidor.tipo_escala == 'DIRETA' %}
-                {% if servidor.escala == 'A' %}
-                  {{ valores_escala.A }}
-                {% elif servidor.escala == 'B' %}
-                  {{ valores_escala.B }}
-                {% elif servidor.escala == 'C' %}
-                  {{ valores_escala.C }}
-                {% elif servidor.escala == 'D' %}
-                  {{ valores_escala.D }}
-                {% endif %}
-              {% elif servidor.tipo_escala == 'INDIRETA' %}
-                {% if servidor.escala == 'A' %}
-                  {{ valores_escala.A }}
-                {% elif servidor.escala == 'B' %}
-                  {{ valores_escala.B }}
-                {% elif servidor.escala == 'C' %}
-                  {{ valores_escala.C }}
-                {% elif servidor.escala == 'D' %}
-                  {{ valores_escala.D }}
-                {% endif %}
-              {% endif %}
-            </td>
-            <td>{{ servidor.tipo_escala }}</td> 
-            <td>{{ servidor.tipo_modalidade }}</td>
-            <td> {{servidor.escala}}</td>
-            <td> "teste" </td>
-            <td>{{ servidor.total_pontos }}</td>
-            <td> {{ servidor.id }}</td>
-          </tr>
+        <tr>
+          <td>{{ servidor.nome }}</td>
+          <td>{{ servidor.matricula }}</td>
+          <td>{{ "tristeza" }}</td>
+          <td>{{ servidor.tipo_escala }}</td>
+          <td>{{ servidor.tipo_modalidade }}</td>
+          <td> {{servidor.escala}}</td>
+          <td> {{"test"}} </td>
+          <td>{{ servidor.total_pontos }}</td>
+          <td> {{ servidor.id }}</td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
-    <a href="{% url 'download_pdf' %}" class="btn btn-primary">Baixar PDF</a>
+    <a href="{% url 'dados_servidor' %}" class="btn btn-primary">Retornar</a>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
   <script>
     function filterServidores() {
       var input, filter, table, tr, td, i, txtValue;

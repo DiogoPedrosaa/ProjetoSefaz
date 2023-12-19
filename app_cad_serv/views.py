@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Servidor, TarefaRealizada
 from .forms import ServidorForm, TarefaRealizadaForm
@@ -9,6 +10,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import Paragraph
+import locale
 
 
 
@@ -45,20 +47,8 @@ def cadastrar(request):
 
 def dados_servidor(request):
     servidores = Servidor.objects.all()
-
-    valores_escala = {
-        'A': calcular_valores_escala('DIRETA', 16.71),  # Substitua pelos valores reais que você deseja
-        'B': calcular_valores_escala('DIRETA', 24.98),
-        'C': calcular_valores_escala('DIRETA', 36.46),
-        'D': calcular_valores_escala('DIRETA', 50.65),
-
-
-        'A': calcular_valores_escala('INDIRETA', 11.02),  
-        'B': calcular_valores_escala('INDIRETA', 16.71),
-        'C': calcular_valores_escala('INDIRETA', 24.98),
-        'D': calcular_valores_escala('INDIRETA', 36.46),
-    }
-    return render(request, 'servidores/dados_servidor.html', {'servidores': servidores, 'valores_escala': valores_escala})
+    
+    return render(request, 'servidores/dados_servidor.html', {'servidores': servidores})
 
 
 def cadastro_sucesso(request):
@@ -369,11 +359,27 @@ def generate_pdf(request):
     buffer.seek(0)
 
     # Crie uma resposta de arquivo para o PDF gerado
-    response = FileResponse(buffer, as_attachment=True, filename='example.pdf')
+    response = FileResponse(buffer, as_attachment=True, filename='Dados_Servidores.pdf')
 
 
 
     return response
+
+def formatar_mes_referencia():
+    
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+
+    
+    mes_referencia = datetime.now().strftime('%B %Y')
+    
+    
+    mes, ano = mes_referencia.split()
+    
+    
+    mes = mes.capitalize()
+    
+    
+    return f"{mes} de {ano}"
 
 
 def excluir_servidor(request, servidor_id):
@@ -382,45 +388,20 @@ def excluir_servidor(request, servidor_id):
     return redirect('dados_servidor')
 
 
+    def calcular_valor_vp(servidor):
+        if servidor.tipo_escala == 'DIRETA':
+            valores_escala = {'A': 16.71, 'B': 24.98, 'C': 36.46, 'D': 50.65}
+        elif servidor.tipo_escala == 'INDIRETA':
+            valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
+        else:
+            valores_escala = {'A': 0, 'B': 0, 'C': 0, 'D': 0}
+
+        return valores_escala.get(servidor.escala, 0)
+    
 
 #Logica para calcular valores especificos das escalas (não funcionando)
-def calcular_valores_escala(tipo_escala, escala):
-    if tipo_escala == 'DIRETA':
-        valores_escala = {'A': 16.71, 'B': 24.98, 'C': 36.46, 'D': 50.65}
-    elif tipo_escala == 'INDIRETA':
-        valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
-    else:
-        print(f"Tipo de escala desconhecido: {tipo_escala}")
-        valores_escala = {}
-
-    return valores_escala.get(escala)
-
-
 
 def dados_servidor_geral(request):
-    servidores = Servidor.objects.all()
-    valores_escala = {}
-
-    for servidor in servidores:
-        valores_escala[servidor.id] = calcular_valores_escala(servidor.tipo_escala, servidor.escala)
-
-    return render(request, 'dados_servidor_geral.html', {'servidores': servidores, 'valores_escala': valores_escala})
-
-
-
-def dados_servidor_geral(request):
-    servidores = Servidor.objects.all()
-
-    valores_escala = {
-        'A': calcular_valores_escala('DIRETA', 16.71),  # Substitua pelos valores reais que você deseja
-        'B': calcular_valores_escala('DIRETA', 24.98),
-        'C': calcular_valores_escala('DIRETA', 36.46),
-        'D': calcular_valores_escala('DIRETA', 50.65),
-
-
-        'A': calcular_valores_escala('INDIRETA', 11.02),  
-        'B': calcular_valores_escala('INDIRETA', 16.71),
-        'C': calcular_valores_escala('INDIRETA', 24.98),
-        'D': calcular_valores_escala('INDIRETA', 36.46),
-    }
-    return render(request, 'servidores/dados_servidor_geral.html', {'servidores': servidores, 'valores_escala': valores_escala})
+    servidor = Servidor.objects.all()
+    mes_referencia = formatar_mes_referencia()
+    return render(request, 'servidores/dados_servidor_geral.html', {'servidores': servidor, 'mes_referencia': mes_referencia})
