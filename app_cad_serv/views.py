@@ -388,17 +388,6 @@ def excluir_servidor(request, servidor_id):
     return redirect('dados_servidor')
 
 
-    def calcular_valor_vp(servidor):
-        if servidor.tipo_escala == 'DIRETA':
-            valores_escala = {'A': 16.71, 'B': 24.98, 'C': 36.46, 'D': 50.65}
-        elif servidor.tipo_escala == 'INDIRETA':
-            valores_escala = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
-        else:
-            valores_escala = {'A': 0, 'B': 0, 'C': 0, 'D': 0}
-
-        return valores_escala.get(servidor.escala, 0)
-    
-
 #Logica para calcular valores especificos das escalas (não funcionando)
 
 def dados_servidor_geral(request):

@@ -44,13 +44,13 @@
 
     .small-font {
       font-size: 15px;
-      /* Ajuste o tamanho da fonte conforme necessário */
+      
     }
 
 
     #tabelaServidores {
       font-size: 13px;
-      /* Ajuste o tamanho do texto conforme necessário */
+      font-weight: bold;
     }
 
   </style>
@@ -90,7 +90,7 @@
       </tbody>
     </table>
 
-    <table id="tabelaServidores" class="table table-bordered table-striped">
+    <table id="tabelaServidores" class="table table-bordered">
       <thead>
         <tr>
           <th>Nome do Servidor</th>
@@ -109,11 +109,11 @@
         <tr>
           <td>{{ servidor.nome }}</td>
           <td>{{ servidor.matricula }}</td>
-          <td>{{ "tristeza" }}</td>
+          <td>{{ servidor.gratificacao_formatada }}</td>
           <td>{{ servidor.tipo_escala }}</td>
           <td>{{ servidor.tipo_modalidade }}</td>
           <td> {{servidor.escala}}</td>
-          <td> {{"test"}} </td>
+          <td> {{ servidor.calcular_valor_escala }} </td>
           <td>{{ servidor.total_pontos }}</td>
           <td> {{ servidor.id }}</td>
         </tr>

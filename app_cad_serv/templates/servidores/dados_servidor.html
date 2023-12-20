@@ -11,41 +11,81 @@
       text-align: center;
       width: 100%;
       padding-right: 150px;
+      color: #fff; /* Cor do texto */
     }
 
     .navbar {
       width: 110%; 
       max-width: none; 
-      background-color: grey;
+      background-color: #007BFF; /* Cor de fundo da barra de navegação */
     }
 
-    
     #searchInput {
-      max-width: 200px; /* Defina o valor desejado */
-    }
-
-    
-
-    .form-label {
+      max-width: 200px;
+      border-radius: 5px; /* Bordas arredondadas */
       margin-right: 15px;
     }
 
+    #tabelaServidores {
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 10px; /* Bordas arredondadas para a tabela */
+    }
 
-    .small-font {
-   font-size: 10px; /* Ajuste o tamanho da fonte conforme necessário */
-  }
+    .btn {
+      transition: background-color 0.3s, color 0.3s;
+      border-radius: 5px; /* Bordas arredondadas para botões */
+    }
 
+    .btn-primary {
+      background-color: #28a745; /* Cor de fundo do botão primário */
+      color: #fff; /* Cor do texto do botão primário */
+    }
 
-#tabelaServidores {
-   font-size: 13px; /* Ajuste o tamanho do texto conforme necessário */
-  }
+    .btn-primary:hover {
+      background-color: #218838; /* Cor de fundo ao passar o mouse sobre o botão primário */
+      color: #fff; /* Cor do texto ao passar o mouse sobre o botão primário */
+    }
 
+    .btn-secondary {
+      background-color: #007BFF; /* Cor de fundo do botão secundário */
+      color: #fff; /* Cor do texto do botão secundário */
+    }
+
+    .btn-secondary:hover {
+      background-color: #0056b3; /* Cor de fundo ao passar o mouse sobre o botão secundário */
+      color: #fff; /* Cor do texto ao passar o mouse sobre o botão secundário */
+    }
+
+    .btn-info {
+      background-color: #17a2b8; /* Cor de fundo do botão de informação */
+      color: #fff; /* Cor do texto do botão de informação */
+    }
+
+    .btn-info:hover {
+      background-color: #138496; /* Cor de fundo ao passar o mouse sobre o botão de informação */
+      color: #fff; /* Cor do texto ao passar o mouse sobre o botão de informação */
+    }
+
+    .btn-danger {
+      background-color: #dc3545; /* Cor de fundo do botão de perigo */
+      color: #fff; /* Cor do texto do botão de perigo */
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333; /* Cor de fundo ao passar o mouse sobre o botão de perigo */
+      color: #fff; /* Cor do texto ao passar o mouse sobre o botão de perigo */
+    }
   </style>
 </head>
 <body class="m-0">
   <nav class="navbar navbar-light bg-light">
     <div class="container-fluid text-center">
-      <span class="navbar-brand mb-0 h1 d-flex justify-content-center"><a href="{% url 'home' %}"> Projeto Sefaz </a></span>
+      <span class="navbar-brand mb-0 h1 d-flex justify-content-center">
+        <a href="{% url 'home' %}">
+          <i class="fas fa-home"></i> Projeto Sefaz
+        </a>
+      </span>
     </div>
   </nav>
   <div class="container-fluid text-center">
@@ -56,8 +96,7 @@
       <input type="text" class="form-control" id="searchInput" oninput="filterServidores()">
     </div>
 
-    
-    <table id="tabelaServidores" class="table table-bordered table-striped small-font">
+    <table id="tabelaServidores" class="table table-bordered small-font">
       <thead>
         <tr>
           <th>Nome do Servidor</th>
@@ -87,16 +126,16 @@
             <td>
               <div class="d-flex">
                 <a href="{% url 'relatorio_servidor' servidor.id %}" class="btn btn-primary mr-2">
-                  <i class="fa fa-info-circle"></i> Informação Pontos
+                  <i class="fas fa-info-circle"></i> Informação Pontos
                 </a>
                 <a href="{% url 'preencher_tarefas' servidor.id %}" class="btn btn-secondary mr-2">
-                  <i class="fa fa-tasks"></i> Preencher Tarefas
+                  <i class="fas fa-tasks"></i> Preencher Tarefas
                 </a>
                 <a href="{% url 'visualizar_tarefas_servidor' servidor.id %}" class="btn btn-info mr-2">
-                  <i class="fa fa-eye"></i> Visualizar Tarefas
+                  <i class="fas fa-eye"></i> Visualizar Tarefas
                 </a>
                 <a href="{% url 'excluir_servidor' servidor.id %}" class="btn btn-danger">
-                  <i class="fa fa-trash"></i> Excluir
+                  <i class="fas fa-trash"></i> Excluir
                 </a>
               </div>
             </td>
@@ -133,5 +172,4 @@
     }
   </script>
 </body>
-
 </html>

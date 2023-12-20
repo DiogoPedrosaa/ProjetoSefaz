@@ -1,8 +1,13 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.formats import number_format
+from django.utils.translation import gettext as _
+from django.utils import formats
+import locale
 
 
 class Servidor(models.Model):
+
 
     def validar_nome(value):
         if any(char.isdigit() for char in value):
@@ -65,6 +70,33 @@ class Servidor(models.Model):
         ('REMOTO', 'Remoto'),
     ]
 
+    def calcular_valor_escala(self):
+        valores_escala_direta = {'A': 16.71, 'B': 24.98, 'C': 36.56, 'D': 50.65}
+        valores_escala_indireta = {'A': 11.02, 'B': 16.71, 'C': 24.98, 'D': 36.46}
+
+        if self.tipo_escala == 'DIRETA':
+            return valores_escala_direta.get(self.escala, 0)
+        elif self.tipo_escala == 'INDIRETA':
+            return valores_escala_indireta.get(self.escala, 0)
+        else:
+            return 0
+        
+
+
+    def calcular_gratificacao(self):
+        
+        valor_escala = self.calcular_valor_escala()
+        gratificacao = valor_escala * self.total_pontos
+        return round(gratificacao, 2)
+
+    def gratificacao_formatada(self):
+        gratificacao = self.calcular_gratificacao()
+        # Configurar a localização para o Brasil (ou sua localização desejada)
+        locale.setlocale(locale.LC_ALL, 'pt_BR.utf-8')
+        formatted_gratificacao = locale.currency(gratificacao, grouping=True, symbol=None)
+        return formatted_gratificacao
+    
+    
     nome = models.CharField(max_length=100, null=False, default='', validators=[validar_nome])
     escala = models.CharField(max_length=10, choices=ESCALA_CHOICES)
     tipo_escala = models.CharField(max_length=10, choices=TIPO_ESCALA_CHOICES, default='')

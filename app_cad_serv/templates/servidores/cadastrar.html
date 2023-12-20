@@ -1,66 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Cadastro de Servidor</title>
-  </head>
+  <title>Cadastro de Servidor</title>
+</head>
 
-  <style>
-    .navbar {
-      background-color: aquamarine;
-    }
+<style>
+  .navbar {
+    background-color: aquamarine;
+  }
 
-    .navbar-brand {
-      text-align: center;
-      width: 100%;
-      font-size: 24px;
-    }
+  .navbar-brand {
+    text-align: center;
+    width: 100%;
+    font-size: 24px;
+    color: #fff;
+  }
 
-    .container {
-      background-color: #f4f4f4;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-    }
+  .container {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+  }
 
-    .container h1 {
-      margin-bottom: 20px;
-    }
+  .container h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+  .form-group {
+    margin-bottom: 20px;
+  }
 
-    .btn-primary {
-      margin-right: 10px;
-    }
-  </style>
+  .btn-primary {
+    margin-right: 10px;
+    transition: background-color 0.3s, color 0.3s;
+  }
 
-  <body>
-    <nav class="navbar navbar-light bg-light">
-      <div class="container text-center">
-        <a class="navbar-brand mb-0 h1" href="{% url 'home' %}">Projeto Sefaz</a>
-      </div>
-    </nav>
+  .btn-primary:hover {
+    background-color: #2ecc71;
+    color: #fff;
+  }
+</style>
 
-    <div class="container">
-      <h1 class="text-center">Cadastro de Servidores</h1>
-      <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          {{ form.as_p }}
-        </div>
-        <button type="submit" class="btn btn-primary">CADASTRAR</button>
-      </form>
+<body>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container text-center">
+      <a class="navbar-brand mb-0 h1" href="{% url 'home' %}">
+        <i class="fas fa-home"></i> Projeto Sefaz
+      </a>
     </div>
+  </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
+  <div class="container">
+    <h1 class="text-center">Cadastro de Servidores</h1>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" class="btn btn-primary">CADASTRAR</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha384-k6RqeZHzndpKXik3bR6qzGk65t0sIVMlXM6ZfPTAMN9ShELI6Z6C5x5kI7AvtqH2" crossorigin="anonymous"></script>
+</body>
 </html>
