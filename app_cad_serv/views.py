@@ -394,3 +394,8 @@ def dados_servidor_geral(request):
     servidor = Servidor.objects.all()
     mes_referencia = formatar_mes_referencia()
     return render(request, 'servidores/dados_servidor_geral.html', {'servidores': servidor, 'mes_referencia': mes_referencia})
+
+
+
+def login(request):
+    return render(request, 'servidores/login.html')
