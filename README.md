@@ -1,6 +1,4 @@
 # ProjetoSefaz
-Projetinho do estagio da Sefaz usando python e django
+Projetinho do estagio da Sefaz utilizando python e django
 
-Me diverti(quebrei a cabeça quase passei mal varias vezes) fazendo esse projeto, foi uma experiencia muito bacana, principalmente por ter usado uma linguagem que eu não possuia muita maestria e uma ferramente que eu nunca nem tinha tocado.
-To atualizando o projeto, enquanto estou no estagio. 
-
+Projeto simples, para cadastro e manuseamento de servidores publicos, estou atualizando o projeto conforme as necessidades solicitadas por meu chefe do estagio. 
