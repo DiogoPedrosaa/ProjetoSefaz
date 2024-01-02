@@ -365,6 +365,88 @@ def generate_pdf(request):
 
     return response
 
+
+
+
+
+
+def generate_pdf_geral(request):
+    servidores = Servidor.objects.all()
+    buffer = BytesIO()
+
+    custom_page_size = landscape(letter)
+    doc = SimpleDocTemplate(buffer, pagesize=custom_page_size, rightMargin=50, leftMargin=20)
+    elements = []
+
+    info_table_data = [
+        ["PREFEITURA MUNICIPAL DE MACEIÓ"],
+        ["SECRETARIA MUNICIPAL DA FAZENDA"],
+        ["SETOR: COORD, GERAL DE ATENDIMENTO AO CONTRIBUINTE"],
+        ["COORDENADOR: TESTE"],
+        ["MÊS REFERÊNCIA - teste"]
+    ]
+    info_table = Table(info_table_data, colWidths=[200])
+
+    info_table.setStyle(TableStyle([
+        ('LEFTPADDING', (0, 0), (-1, -1), -280),
+    ]))
+
+    elements.append(info_table)
+
+    secretaria_name = "SECRETARIA MUNICIPAL DA ECONOMIA - SEFAZ"
+    secretaria_style = getSampleStyleSheet()['Title']
+    secretaria_paragraph = Paragraph(secretaria_name, style=secretaria_style)
+    elements.append(secretaria_paragraph)
+
+    col_widths = [170, 50, 50, 70, 70, 80, 70, 90, 60]
+
+    data = [
+        ["Nome do Servidor", "Mat.", "Gratificação", "Administ", "Observação", "Escala", "V.P ATUAL", "Total Pontos", "Nº SERV"]
+    ]
+
+    for servidor in servidores:
+        data.append([
+            servidor.nome,
+            servidor.matricula,
+            servidor.gratificacao_formatada(),  # Chame o método para obter o valor real
+            servidor.tipo_escala,
+            servidor.tipo_modalidade,
+            servidor.escala,
+            servidor.calcular_valor_escala(),  # Chame o método para obter o valor real
+            servidor.total_pontos,
+            servidor.id
+        ])
+
+    table = Table(data, colWidths=col_widths)
+
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+
+    style.add('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')
+    style.add('ALIGN', (0, 0), (-1, -1), 'CENTER')
+    style.add('TEXTCOLOR', (0, 1), (-1, -1), colors.black)
+    style.add('BACKGROUND', (0, 1), (-1, -1), colors.white)
+    style.add('GRID', (0, 0), (-1, -1), 1, colors.black)
+    style.add('FONTSIZE', (0, 1), (-1, -1), 8)
+    style.add('BOTTOMPADDING', (0, 1), (-1, -1), 3)
+    style.add('LEADING', (0, 1), (-1, -1), 10)
+
+    table.setStyle(style)
+    elements.append(table)
+    doc.build(elements)
+
+    buffer.seek(0)
+
+    response = FileResponse(buffer, as_attachment=True, filename='Dados_Servidores_Geral.pdf')
+    return response
+
 def formatar_mes_referencia():
     
     locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')

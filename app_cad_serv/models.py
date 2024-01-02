@@ -121,3 +121,6 @@ class TarefaRealizada(models.Model):
     data = models.DateTimeField(auto_now_add=True)
 
 
+
+
+
