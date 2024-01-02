@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Servidor, TarefaRealizada
-from .forms import ServidorForm, TarefaRealizadaForm
+from .forms import ServidorForm, TarefaRealizadaForm, SignUpForm
 from reportlab.lib.pagesizes import letter
 from django.http import FileResponse
 from io import BytesIO
@@ -11,6 +11,9 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import Paragraph
 import locale
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 
@@ -481,3 +484,20 @@ def dados_servidor_geral(request):
 
 def login(request):
     return render(request, 'servidores/login.html')
+
+
+def cadastrar_usuario(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Nome de usuário já em uso. Escolha outro.')
+                return render(request, 'servidores/cadastrar_usuario.html', {'form': form})
+
+            user = form.save()
+            return redirect('cadastro_sucesso')
+    else:
+        form = SignUpForm()
+
+    return render(request, 'servidores/cadastrar_usuario.html', {'form': form})

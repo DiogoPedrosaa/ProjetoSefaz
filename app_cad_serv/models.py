@@ -4,6 +4,7 @@ from django.utils.formats import number_format
 from django.utils.translation import gettext as _
 from django.utils import formats
 import locale
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 class Servidor(models.Model):
@@ -119,6 +120,42 @@ class TarefaRealizada(models.Model):
     diretor_coordenador = models.CharField(max_length=100, null=False)
     tarefas = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
+
+
+
+class Usuario(AbstractUser):
+
+
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        unique=True,  # Garante que o username seja único
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
+
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=_('groups'),
+        blank=True,
+        help_text=_(
+            'The groups this user belongs to. A user will get all permissions '
+            'granted to each of their groups.'
+        ),
+        related_name='usuarios_groups',  # Adicione este related_name
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_('user permissions'),
+        blank=True,
+        help_text=_('Specific permissions for this user.'),
+        related_name='usuarios_permissions',  # Adicione este related_name
+        related_query_name='user',
+    )
+    
 
 
 

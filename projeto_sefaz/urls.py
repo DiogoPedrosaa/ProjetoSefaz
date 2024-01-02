@@ -14,5 +14,6 @@ urlpatterns = [
     path('excluir_servidor/<int:servidor_id>/', views.excluir_servidor, name='excluir_servidor'),
     path('dados_servidor_geral/', views.dados_servidor_geral, name='dados_servidor_geral'),
     path('login/', views.login, name='login'),
-    path('download_pdf_geral/', views.generate_pdf_geral, name='download_pdf_geral')
+    path('download_pdf_geral/', views.generate_pdf_geral, name='download_pdf_geral'),
+    path('cadastrar_usuario/', views.cadastrar_usuario, name='cadastrar_usuario'),
 ]
