@@ -5,5 +5,7 @@ Projeto simples, para cadastro e manuseamento de servidores publicos, estou atua
 
 TODO:
 Adicionar Sistema de Cadastro e Login de Usuarios, permiter o uso das ferramentas somente ao estar logado
+<br>
 Adicionar sistema de cargo, que limita algumas funções.
+<br>
 Adicionar Template de perfil do usuario.
