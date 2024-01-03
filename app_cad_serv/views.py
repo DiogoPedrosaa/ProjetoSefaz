@@ -11,9 +11,10 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import Paragraph
 import locale
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
 
 
 
@@ -482,9 +483,22 @@ def dados_servidor_geral(request):
 
 
 
-def login(request):
-    return render(request, 'servidores/login.html')
+def login_page(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('cadastro_sucesso')  # Redirecione para a página inicial após o login
+            else:
+                messages.error(request, 'Credenciais inválidas. Por favor, tente novamente.')
+    else:
+        form = AuthenticationForm()
 
+    return render(request, 'servidores/login.html', {'form': form})
 
 def cadastrar_usuario(request):
     if request.method == 'POST':

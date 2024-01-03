@@ -1,7 +1,7 @@
 from django import forms
 from .models import Servidor, TarefaRealizada
 from django.core.validators import MinLengthValidator, ValidationError
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Usuario
 
 class ServidorForm(forms.ModelForm):
@@ -41,3 +41,8 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = Usuario
         fields = ['username', 'email', 'password1', 'password2']
+
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = Usuario
+        fields = ['username', 'password']
