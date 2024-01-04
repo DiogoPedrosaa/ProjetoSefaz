@@ -290,24 +290,6 @@ def generate_pdf(request):
     doc = SimpleDocTemplate(buffer, pagesize=custom_page_size, rightMargin=50, leftMargin=20)
     elements = []
 
-
-
-    info_table_data = [
-        ["PREFEITURA MUNICIPAL DE MACEIÓ"],
-        ["SECRETARIA MUNICIPAL DA FAZENDA"],
-        ["SETOR: COORD, GERAL DE ATENDIMENTO AO CONTRIBUINTE"],
-        ["COORDENADOR: TESTE"],
-        ["MÊS REFERÊNCIA - teste"]
-    ]
-    info_table = Table(info_table_data, colWidths=[200])
-
-    info_table.setStyle(TableStyle([
-    ('LEFTPADDING', (0, 0), (-1, -1), -280),  # Ajusta a margem esquerda
-]))
-
-    elements.append(info_table)
-
-    
     secretaria_name = "SECRETARIA MUNICIPAL DA ECONOMIA - SEFAZ"
     secretaria_style = getSampleStyleSheet()['Title']
     secretaria_paragraph = Paragraph(secretaria_name, style=secretaria_style)
@@ -402,7 +384,7 @@ def generate_pdf_geral(request):
     secretaria_paragraph = Paragraph(secretaria_name, style=secretaria_style)
     elements.append(secretaria_paragraph)
 
-    col_widths = [170, 50, 50, 70, 70, 80, 70, 90, 60]
+    col_widths = [170, 50, 70, 70, 70, 60, 70, 90, 60]
 
     data = [
         ["Nome do Servidor", "Mat.", "Gratificação", "Administ", "Observação", "Escala", "V.P ATUAL", "Total Pontos", "Nº SERV"]
