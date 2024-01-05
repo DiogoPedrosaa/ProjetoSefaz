@@ -10,14 +10,13 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import Paragraph
-import locale
+import locale, logging
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-
-
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -471,16 +470,25 @@ def login_page(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
+            
+            # Adicione mensagens de log para entender o que está sendo enviado para authenticate
+            logger.debug(f'Username: {username}')
+            logger.debug(f'Password: {password}')
+
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Redirecione para a página inicial após o login
+                return redirect('home')
             else:
                 messages.error(request, 'Credenciais inválidas. Por favor, tente novamente.')
+        else:
+            # Adicione uma mensagem de log para identificar possíveis problemas
+            logger.error(f'Formulário inválido: {form.errors}')
     else:
         form = AuthenticationForm()
 
     return render(request, 'servidores/login.html', {'form': form})
+
 
 def cadastrar_usuario(request):
     if request.method == 'POST':

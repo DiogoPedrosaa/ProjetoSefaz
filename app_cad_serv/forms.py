@@ -40,9 +40,10 @@ class SignUpForm(UserCreationForm):
     
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'password1', 'password2']
 
 class LoginForm(AuthenticationForm):
     class Meta:
         model = Usuario
         fields = ['username', 'password']
+        password = forms.CharField(label="Senha", widget=forms.PasswordInput)
