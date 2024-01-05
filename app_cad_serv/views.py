@@ -474,7 +474,7 @@ def login_page(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('cadastro_sucesso')  # Redirecione para a página inicial após o login
+                return redirect('home')  # Redirecione para a página inicial após o login
             else:
                 messages.error(request, 'Credenciais inválidas. Por favor, tente novamente.')
     else:

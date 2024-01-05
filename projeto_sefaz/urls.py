@@ -1,6 +1,7 @@
 
 from django.urls import path
 from app_cad_serv import views
+from django.contrib import admin
 
 urlpatterns = [
     path('', views.home, name = 'home'),
@@ -16,4 +17,5 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('download_pdf_geral/', views.generate_pdf_geral, name='download_pdf_geral'),
     path('cadastrar_usuario/', views.cadastrar_usuario, name='cadastrar_usuario'),
+    path('admin/', admin.site.urls),
 ]
