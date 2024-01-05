@@ -40,7 +40,14 @@ class SignUpForm(UserCreationForm):
     
     class Meta:
         model = Usuario
-        fields = ['username', 'password1', 'password2']
+        fields = ['username', 'password1', 'password2', 'is_superusuario']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_superusuario = self.cleaned_data['is_superusuario']
+        if commit:
+            user.save()
+        return user
 
 class LoginForm(AuthenticationForm):
     class Meta:

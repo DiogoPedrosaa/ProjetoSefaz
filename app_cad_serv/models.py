@@ -155,6 +155,7 @@ class Usuario(AbstractUser):
         related_name='usuarios_permissions',  # Adicione este related_name
         related_query_name='user',
     )
+    is_superusuario = models.BooleanField(default=False)
     
 
 

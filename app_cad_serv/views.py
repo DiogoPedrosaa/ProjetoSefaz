@@ -15,6 +15,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,7 @@ logger = logging.getLogger(__name__)
 def home(request):
     return render(request, 'servidores/home.html')
 
+@login_required
 def cadastrar(request):
     if request.method == 'POST':
         form = ServidorForm(request.POST)
@@ -47,7 +49,7 @@ def cadastrar(request):
 
     return render(request, 'servidores/cadastrar.html', {'form': form})
 
-
+@login_required
 def dados_servidor(request):
     servidores = Servidor.objects.all()
     
@@ -129,7 +131,7 @@ def calcular_pontos(pontualidade, assiduidade, execucao_tarefas, iniciativa, ate
     return pontos, gratificacao
 
 
-
+@login_required
 def relatorio_servidor(request, servidor_id):
     
     servidor = Servidor.objects.get(pk=servidor_id)
@@ -224,7 +226,7 @@ def calcular_pontos_atendimento_servicos(atendimento_servicos):
         return 0
     
     
-
+@login_required
 def relatorio_servidor(request, servidor_id):
     servidor = Servidor.objects.get(pk=servidor_id)
     
@@ -247,7 +249,7 @@ def relatorio_servidor(request, servidor_id):
 
 
     
-#Logica para Preencher as tarefas do servidor
+@login_required
 def preencher_tarefas(request, servidor_id):
     servidor = Servidor.objects.get(pk=servidor_id)
 
@@ -267,7 +269,7 @@ def preencher_tarefas(request, servidor_id):
 
 
 
-#Envia as tarefas registradas para o visualizados
+@login_required
 def visualizar_tarefas_servidor(request, servidor_id):
     servidor = get_object_or_404(Servidor, pk=servidor_id)
     tarefas = TarefaRealizada.objects.filter(colaborador=servidor.nome)
@@ -490,6 +492,7 @@ def login_page(request):
     return render(request, 'servidores/login.html', {'form': form})
 
 
+@login_required
 def cadastrar_usuario(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
