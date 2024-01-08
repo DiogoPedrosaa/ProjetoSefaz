@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LogoutView
 
 logger = logging.getLogger(__name__)
 
@@ -508,3 +509,9 @@ def cadastrar_usuario(request):
         form = SignUpForm()
 
     return render(request, 'servidores/cadastrar_usuario.html', {'form': form})
+
+class CustomLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        # Redireciona o usuário para a página home após o logout
+        return redirect('home')  # Certifique-se de ter uma URL nomeada 'home' em suas configurações de URL

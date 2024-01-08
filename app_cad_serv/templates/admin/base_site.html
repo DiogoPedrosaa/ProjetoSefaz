@@ -1,0 +1,13 @@
+{% load i18n static %}
+
+{% block branding %}
+  <h1 id="site-name">{% trans 'Administração SEFAZ' %}</h1>
+  {% if user.is_active and user.is_staff %}
+    <p id="user-tools">
+      {% trans 'Bem-vindo,' %}
+      <strong>{{ user.get_username }}</strong>.
+      <a href="{% url 'home' %}">{% trans 'Retornar à Página Inicial' %}</a>.
+      <a href="{% url 'admin:logout' %}">{% trans 'Logout' %}</a>
+    </p>
+  {% endif %}
+{% endblock %}

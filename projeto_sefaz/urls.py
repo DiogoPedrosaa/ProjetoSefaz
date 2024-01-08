@@ -17,5 +17,5 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('download_pdf_geral/', views.generate_pdf_geral, name='download_pdf_geral'),
     path('cadastrar_usuario/', views.cadastrar_usuario, name='cadastrar_usuario'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
 ]

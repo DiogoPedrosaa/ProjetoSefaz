@@ -9,6 +9,7 @@
   <style>
     .navbar {
       background-color: aquamarine;
+      position: relative;
     }
 
     .navbar-brand {
@@ -16,19 +17,70 @@
       width: 100%;
       font-size: 24px;
       color: #fff;
+
+    }
+
+    .menubar {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .menubar a {
+      margin: 0 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .login-cadastrar {
+      display: flex;
+      justify-content: flex-start; 
+      align-items:center;
+      margin-right: auto; 
+    }
+
+    
+    .outros-botoes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      margin-right: 180px;
     }
 
     .jumbotron {
       background-color: #3498db;
       color: #fff;
-      padding: 40px;
-      border-radius: 10px;
+      padding: 35px;
+      border-radius: 0px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .jumbotron img {
+      position: absolute;
+      top: -2px; 
+      right: 0px;
+      max-height: 180px;
     }
 
     .container {
       text-align: center;
       margin-top: 20px;
+    }
+
+    .imagem-fundo {
+        width: 100%;
+        overflow: hidden;
+        margin-top: 280px;
+    }
+
+    .imagem-fundo img {
+        width: 100%;
+        height: auto;
     }
 
     .btn {
@@ -45,21 +97,33 @@
   <title>Pagina Inicial</title>
 </head>
 <body>
- 
 
+  
   <div class="jumbotron">
-    <h1>SECRETARIA MUNICIPAL DA FAZENDA</h1>
-    <p>Projeto feito utilizando Python com Django.</p>
+    <h2>SECRETARIA MUNICIPAL DA FAZENDA DE MACEIÓ</h2>
+    
+    <img src="https://i.imgur.com/P4MhD1i.png" alt="Imagem dentro do Jumbotron">
+  </div>
+  
+  <div class="menubar">
+
+    <div class="login-cadastrar">
+      <a href="/login" class="btn btn-primary"> LOGIN </a>
+      <a href="/cadastrar_usuario" class="btn btn-primary"> CADASTRAR </a>
+    </div>
+
+    <div class="outros-botoes">
+      <a href="/cadastrar" class="btn btn-primary ">Cadastrar Servidor</a>
+      <a href="/dados_servidor" class="btn btn-primary ">Consultar Servidores</a>
+      <a href="/admin" class="btn btn-primary "> ÁREA DE ADMINISTRAÇÃO</a>
+    </div>
   </div>
 
-  <div class="container">
-    <a href="/cadastrar" class="btn btn-primary">Cadastrar Servidor</a>
-    <a href="/dados_servidor" class="btn btn-primary">Consultar Servidores</a>
-    <a href="/login" class="btn btn-primary"> LOGIN </a>
-    <a href="/cadastrar_usuario" class="btn btn-primary"> CADASTRAR </a>
-    <a href="/admin" class="btn btn-primary"> ÁREA DE ADMINISTRAÇÃO</a>
+  <div class="imagem-fundo">
+    <img src="https://i.imgur.com/HG39ROC.png" alt="Imagem Fundo">
   </div>
-
+  
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
