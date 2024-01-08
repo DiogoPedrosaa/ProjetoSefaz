@@ -9,3 +9,5 @@ Arrumar o bug de não conseguir definir um setor para um usuario.
 Adicionar sistema de cargo personalizados, que limita algumas funções.
 <br>
 Adicionar Template de perfil do usuario.
+<br>
+Revisar funções, classes, templates, importações e etc depreciadas do projeto.
