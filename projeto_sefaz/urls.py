@@ -2,6 +2,7 @@
 from django.urls import path
 from app_cad_serv import views
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.home, name = 'home'),
@@ -18,4 +19,5 @@ urlpatterns = [
     path('download_pdf_geral/', views.generate_pdf_geral, name='download_pdf_geral'),
     path('cadastrar_usuario/', views.cadastrar_usuario, name='cadastrar_usuario'),
     path('admin/', admin.site.urls, name='admin'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

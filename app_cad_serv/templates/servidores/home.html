@@ -36,20 +36,12 @@
       font-size: 16px;
     }
 
-    .login-cadastrar {
-      display: flex;
-      justify-content: flex-start; 
-      align-items:center;
-      margin-right: auto; 
-    }
-
-    
     .outros-botoes {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-grow: 1;
-      margin-right: 180px;
+      margin-right: 90px;
     }
 
     .jumbotron {
@@ -62,14 +54,9 @@
 
     .jumbotron img {
       position: absolute;
-      top: -2px; 
+      top: 75px; 
       right: 0px;
       max-height: 180px;
-    }
-
-    .container {
-      text-align: center;
-      margin-top: 20px;
     }
 
     .imagem-fundo {
@@ -82,6 +69,33 @@
         width: 100%;
         height: auto;
     }
+
+    .usuario-barra {
+      background-color: #3498db;
+      padding: 10px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .usuario-barra span {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+
+  .usuario-barra form {
+    display: flex;
+    align-items: center;
+  }
+
+  .usuario-barra button {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 16px;
+  }
 
     .btn {
       margin: 10px;
@@ -98,7 +112,19 @@
 </head>
 <body>
 
-  
+  <div class="usuario-barra">
+    {% if user.is_authenticated %}
+      <span>Bem-vindo(a), {{ user.username }}</span>
+      {% if user.groups.all %}
+        <span>Setor: {{ user.groups.all.0.name }}</span>
+      {% endif %}
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Logout</button>
+      </form>
+    {% endif %}
+  </div>
+
   <div class="jumbotron">
     <h2>SECRETARIA MUNICIPAL DA FAZENDA DE MACEIÓ</h2>
     
@@ -106,24 +132,20 @@
   </div>
   
   <div class="menubar">
-
-    <div class="login-cadastrar">
-      <a href="/login" class="btn btn-primary"> LOGIN </a>
-      <a href="/cadastrar_usuario" class="btn btn-primary"> CADASTRAR </a>
-    </div>
-
     <div class="outros-botoes">
-      <a href="/cadastrar" class="btn btn-primary ">Cadastrar Servidor</a>
-      <a href="/dados_servidor" class="btn btn-primary ">Consultar Servidores</a>
-      <a href="/admin" class="btn btn-primary "> ÁREA DE ADMINISTRAÇÃO</a>
+      <a href="/cadastrar" class="btn btn-primary">Cadastrar Servidor</a>
+      <a href="/dados_servidor" class="btn btn-primary">Consultar Servidores</a>
+      
+      {% if user.is_authenticated and user.is_superuser %}
+        <a href="/admin" class="btn btn-primary">ÁREA DE ADMINISTRAÇÃO</a>
+      {% endif %}
     </div>
   </div>
 
   <div class="imagem-fundo">
     <img src="https://i.imgur.com/HG39ROC.png" alt="Imagem Fundo">
   </div>
-  
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

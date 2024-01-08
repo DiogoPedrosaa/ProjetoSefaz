@@ -20,9 +20,10 @@ from django.contrib.auth.views import LogoutView
 
 logger = logging.getLogger(__name__)
 
-
+@login_required
 def home(request):
-    return render(request, 'servidores/home.html')
+    user = request.user
+    return render(request, 'servidores/home.html', {'user': user})
 
 @login_required
 def cadastrar(request):
@@ -56,7 +57,7 @@ def dados_servidor(request):
     
     return render(request, 'servidores/dados_servidor.html', {'servidores': servidores})
 
-
+@login_required
 def cadastro_sucesso(request):
     return render(request, 'servidores/cadastro_sucesso.html')
 
@@ -278,7 +279,7 @@ def visualizar_tarefas_servidor(request, servidor_id):
 
 
 
-#logica para gerar o pdf da pagina de dados dos servidores
+@login_required
 def generate_pdf(request):
     
     servidores = Servidor.objects.all()
@@ -357,7 +358,7 @@ def generate_pdf(request):
 
 
 
-
+@login_required
 def generate_pdf_geral(request):
     servidores = Servidor.objects.all()
     buffer = BytesIO()
@@ -451,7 +452,7 @@ def formatar_mes_referencia():
     
     return f"{mes} de {ano}"
 
-
+@login_required
 def excluir_servidor(request, servidor_id):
     servidor = get_object_or_404(Servidor, pk=servidor_id)
     servidor.delete()
@@ -459,7 +460,7 @@ def excluir_servidor(request, servidor_id):
 
 
 #Logica para calcular valores especificos das escalas (não funcionando)
-
+@login_required
 def dados_servidor_geral(request):
     servidor = Servidor.objects.all()
     mes_referencia = formatar_mes_referencia()
@@ -491,7 +492,6 @@ def login_page(request):
         form = AuthenticationForm()
 
     return render(request, 'servidores/login.html', {'form': form})
-
 
 @login_required
 def cadastrar_usuario(request):

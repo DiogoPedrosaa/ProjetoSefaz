@@ -54,3 +54,5 @@ class LoginForm(AuthenticationForm):
         model = Usuario
         fields = ['username', 'password']
         password = forms.CharField(label="Senha", widget=forms.PasswordInput)
+
+
